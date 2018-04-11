@@ -1,0 +1,31 @@
+{
+  "variables": {
+    "region": "us-west-2",
+    "subnet_id": "subnet-50e2170a",
+    "source_ami": "ami-95c15ced",
+    "ami_name": "archlinux-base-{{isotime \"2006-01-02\"}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "source_ami": "{{user `source_ami`}}",
+      "ami_name": "{{user `ami_name`}}",
+      "region": "{{user `region`}}",
+      "instance_type": "t2.micro",
+      "ssh_username": "root",
+      "ssh_keypair_name": "psev",
+      "ssh_agent_auth": "true",
+      "subnet_id": "{{user `subnet_id`}}",
+      "associate_public_ip_address": "true",
+      "tags": {
+        "Name": "{{user `ami_name`}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "base.sh"
+    }
+  ]
+}
